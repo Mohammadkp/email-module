@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Form</title>
+
+    <!-- EmailJS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script>
+        // EmailJS Initialize
+        emailjs.init("LCflruwvRsswqZSll");
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Leave a Review</h2>
+
+    <!-- Review Form -->
+    <form id="reviewForm">
+
+        <!-- User Name -->
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter Your Name"
+            required
+        >
+
+        <!-- User Email (Optional) -->
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter Your Email"
+        >
+
+        <!-- Review Message -->
+        <textarea
+            id="review"
+            rows="5"
+            placeholder="Write Your Review"
+            required
+        ></textarea>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit Review</button>
+
+    </form>
+
+    <!-- Success/Error Message -->
+    <div id="status"></div>
+
+    <script>
+
+        // Form Submit Event
+        document.getElementById("reviewForm").addEventListener("submit", function(e) {
+
+            // Prevent Page Reload
+            e.preventDefault();
+
+            // Get User Input Values
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const review = document.getElementById("review").value;
+
+            // Send Data To EmailJS
+            emailjs.send(
+                "service_olbt9dh",     // EmailJS Service ID
+                "template_tmigtik",    // EmailJS Template ID
+                {
+                    from_name: name,
+                    from_email: email,
+                    review_message: review
+                }
+            )
+            .then(function(response) {
+
+                // Success Message
+                document.getElementById("status").innerHTML =
+                    "✅ Review Successfully Sent!";
+
+                // Clear Form
+                document.getElementById("reviewForm").reset();
+
+                console.log("SUCCESS", response);
+
+            })
+            .catch(function(error) {
+
+                // Error Message
+                document.getElementById("status").innerHTML =
+                    "❌ Failed To Send Review.";
+
+                console.log("ERROR", error);
+
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
